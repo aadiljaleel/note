@@ -1,0 +1,24 @@
+#!/bin/bash
+
+cd $(dirname "$0")
+subcommand="$1"
+
+if [[ "${subcommand}" == "view" ]]; then
+  arg="$2"
+  if [[ "${arg}" == "pull" ]]; then
+    git pull
+  fi
+  nano README.md
+elif [[ "${subcommand}" == "grep" ]]; then
+  shift
+  grep "$@" README.md
+elif [[ "${subcommand}" == "edit" ]]; then
+  xdg-open README.md
+else
+  # create / default
+  git pull
+  nano README.md
+  git add README.md
+  git commit -m "$(date)"
+  git push
+fi
